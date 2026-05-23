@@ -82,7 +82,7 @@ function calculate() {
     let RH = parseFloat(document.getElementById("humidity").value);
 
     if (isNaN(T) || isNaN(RH)) {
-        document.getElementById("result").innerHTML = "Please enter valid numbers!";
+        document.getElementById("result").innerHTML = "請輸入有效的數字";
         return;
     }
 
@@ -128,7 +128,7 @@ function calculate() {
     }
 
     document.getElementById("result").innerHTML =
-        `<b>Apparent Temperature: ${AT.toFixed(2)} °C</b>` + warningBox;
+        `<b>體感溫度: ${AT.toFixed(2)} °C</b>` + warningBox;
 }
 </script>
 
