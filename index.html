@@ -15,14 +15,12 @@
             padding: 8px;
             margin: 5px;
             width: 150px;
-            font-size: 14px;
         }
 
         button {
             padding: 10px 20px;
             margin-top: 10px;
             cursor: pointer;
-            font-size: 14px;
         }
 
         #result {
@@ -30,51 +28,34 @@
             font-size: 18px;
         }
 
-        /* Warning box styles */
         .box {
             padding: 15px;
             margin: 20px auto;
             border-radius: 10px;
             width: 60%;
             text-align: left;
-            font-size: 16px;
         }
 
-        .orange {
-            background-color: #ffe5cc;
-            color: #cc6600;
-        }
-
-        .red {
-            background-color: #ffd6d6;
-            color: #cc0000;
-        }
-
-        .purple {
-            background-color: #f0d6ff;
-            color: #800080;
-        }
-
-        .safe {
-            background-color: #e6ffe6;
-            color: #006600;
-        }
+        .orange { background-color: #ffe5cc; color: #cc6600; }
+        .red { background-color: #ffd6d6; color: #cc0000; }
+        .purple { background-color: #f0d6ff; color: #800080; }
+        .safe { background-color: #e6ffe6; color: #006600; }
     </style>
 </head>
 
 <body>
 
-    <h2>體感溫度計算器</h2>
+<h2>體感溫度計算器</h2>
 
-    <div>
-        <input type="number" id="temp" placeholder="氣溫 (°C)">
-        <br>
-        <input type="number" id="humidity" placeholder="相對濕度 (%)">
-        <br>
-        <button onclick="calculate()">計算</button>
-    </div>
+<div>
+    <input type="number" id="temp" placeholder="氣溫 (°C)">
+    <br>
+    <input type="number" id="humidity" placeholder="相對濕度 (%)">
+    <br>
+    <button onclick="calculate()">計算</button>
+</div>
 
-    <div id="result"></div>
+<div id="result"></div>
 
 <script>
 function calculate() {
@@ -86,7 +67,6 @@ function calculate() {
         return;
     }
 
-    // Apparent Temperature formula
     let AT = -8.784695 +
              1.61139411 * T +
              2.338549 * RH +
@@ -103,21 +83,21 @@ function calculate() {
         warningBox = `
         <div class="box orange">
             🟠 特別注意<br><br>
-            長時間暴露在陽光下或進行體力活動可能導致中暑、肌肉抽筋和熱衰竭。建議市民減少戶外劇烈活動、穿著輕便及淺色的衣物、補充足夠水分。
+            長時間暴露在陽光下或進行體力活動可能導致中暑。
         </div>`;
     }
     else if (AT >= 40 && AT <= 47) {
         warningBox = `
         <div class="box red">
             🔴 危險<br><br>
-            極可能發生中暑、熱痙攣和熱衰竭。長時間暴露在陽光下或進行體力活動有可能發生嚴重中暑。建議市民避免戶外劇烈活動、穿著輕便及淺色的衣物、補充足夠水分，特別關注易受影響的族群。
+            極可能發生中暑或熱衰竭。
         </div>`;
     }
-    else if (AT >= 48 && AT <= 100) {
+    else if (AT >= 48) {
         warningBox = `
         <div class="box purple">
             🟣 極度危險<br><br>
-            極可能發生嚴重中暑（熱射病）。這是威脅生命的情況。建議市民避免所有戶外活動及補充足夠水分，並尋找有空調的庇護所，若出現症狀請撥打急救電話。
+            可能發生熱射病，屬於生命危險。
         </div>`;
     }
     else {
