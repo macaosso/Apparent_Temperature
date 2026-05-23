@@ -32,13 +32,15 @@
             gap: 10px;
         }
 
+        /* ✅ SHORTER input boxes */
         input {
-            width: 100%;
+            width: 75%;
             padding: 12px;
-            margin: 8px 0;
+            margin: 8px auto;
             font-size: 16px;
             border-radius: 8px;
             border: 1px solid #ccc;
+            display: block;
         }
 
         button {
@@ -93,10 +95,15 @@
             overflow-y: auto;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
+
+        /* ✅ FIXED image styling */
         .bottom-img {
             margin-top: 20px;
-            width: 100%;
+            width: 60%;
             max-width: 200px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
         }
     </style>
 </head>
@@ -110,7 +117,6 @@
         <button class="help-btn" onclick="toggleFAQ()">❓</button>
     </div>
 
-    <!-- ✅ FAQ (FULL TEXT, NOT SHORTENED) -->
     <div id="faq" class="faq-box" style="display:none;">
 
         <h3>常見問題</h3>
@@ -144,7 +150,10 @@
     <button onclick="calculate()">計算</button>
 
     <div id="result"></div>
+
+    <!-- ✅ IMAGE -->
     <img src="MSSO (1).png" class="bottom-img">
+
 </div>
 
 <script>
