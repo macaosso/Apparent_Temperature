@@ -2,29 +2,66 @@
 <html>
 <head>
     <title>Apparent Temperature Calculator</title>
+
     <style>
         body {
             font-family: Arial;
             text-align: center;
             margin-top: 50px;
+            background-color: #f5f5f5;
         }
+
         input {
             padding: 8px;
             margin: 5px;
-            width: 120px;
+            width: 150px;
+            font-size: 14px;
         }
+
         button {
-            padding: 10px 15px;
+            padding: 10px 20px;
             margin-top: 10px;
             cursor: pointer;
+            font-size: 14px;
         }
+
         #result {
             margin-top: 20px;
-            font-size: 20px;
-            font-weight: bold;
+            font-size: 18px;
+        }
+
+        /* Warning box styles */
+        .box {
+            padding: 15px;
+            margin: 20px auto;
+            border-radius: 10px;
+            width: 60%;
+            text-align: left;
+            font-size: 16px;
+        }
+
+        .orange {
+            background-color: #ffe5cc;
+            color: #cc6600;
+        }
+
+        .red {
+            background-color: #ffd6d6;
+            color: #cc0000;
+        }
+
+        .purple {
+            background-color: #f0d6ff;
+            color: #800080;
+        }
+
+        .safe {
+            background-color: #e6ffe6;
+            color: #006600;
         }
     </style>
 </head>
+
 <body>
 
     <h2>Apparent Temperature Calculator</h2>
@@ -49,6 +86,7 @@ function calculate() {
         return;
     }
 
+    // Apparent Temperature formula
     let AT = -8.784695 +
              1.61139411 * T +
              2.338549 * RH +
@@ -64,21 +102,21 @@ function calculate() {
     if (AT >= 38 && AT <= 39) {
         warningBox = `
         <div class="box orange">
-            🟠 特別注意<br>
+            🟠 特別注意<br><br>
             長時間暴露在陽光下或進行體力活動可能導致中暑、肌肉抽筋和熱衰竭。建議市民減少戶外劇烈活動、穿著輕便及淺色的衣物、補充足夠水分。
         </div>`;
     }
     else if (AT >= 40 && AT <= 47) {
         warningBox = `
         <div class="box red">
-            🔴 危險<br>
+            🔴 危險<br><br>
             極可能發生中暑、熱痙攣和熱衰竭。長時間暴露在陽光下或進行體力活動有可能發生嚴重中暑。建議市民避免戶外劇烈活動、穿著輕便及淺色的衣物、補充足夠水分，特別關注易受影響的族群。
         </div>`;
     }
     else if (AT >= 48 && AT <= 55) {
         warningBox = `
         <div class="box purple">
-            🟣 極度危險<br>
+            🟣 極度危險<br><br>
             極可能發生嚴重中暑（熱射病）。這是威脅生命的情況。建議市民避免所有戶外活動及補充足夠水分，並尋找有空調的庇護所，若出現症狀請撥打急救電話。
         </div>`;
     }
@@ -90,7 +128,7 @@ function calculate() {
     }
 
     document.getElementById("result").innerHTML =
-        `Apparent Temperature: ${AT.toFixed(2)} °C<br>` + warningBox;
+        `<b>Apparent Temperature: ${AT.toFixed(2)} °C</b>` + warningBox;
 }
 </script>
 
