@@ -297,16 +297,16 @@ function calculate() {
   let warningBox = "";
 
   if (AT >= 35.5 && AT <= 39.4999) {
-    warningBox = `<div class="box yellow">🟡 注意<br><br>長時間暴露在陽光下或進行體力活動可能會導致疲勞。請保持水分補充，並在陰涼處休息。</div>`;
+    warningBox = `<div class="box yellow">🟡 注意<br><br>長時間暴露在陽光下或進行體力活動可能會導致疲勞。請補充足夠水分，並在陰涼處休息。</div>`;
   } 
   else if (AT >= 39.5 && AT <= 45.4999) {
-    warningBox = `<div class="box orange">🟠 特別注意<br><br>長時間暴露在陽光下或進行體力活動可能導致中暑、肌肉抽筋和熱衰竭。建議減少戶外劇烈活動、穿著輕便衣物、補充水分。</div>`;
+    warningBox = `<div class="box orange">🟠 特別注意<br><br>長時間暴露在陽光下或進行體力活動可能導致中暑、肌肉抽筋和熱衰竭。建議市民減少戶外劇烈活動、穿著輕便及淺色的衣物、補充足夠水分。</div>`;
   } 
   else if (AT >= 45.5 && AT <= 54.4999) {
-    warningBox = `<div class="box red">🔴 危險<br><br>極可能發生中暑、熱痙攣和熱衰竭。建議避免戶外劇烈活動並補充水分。</div>`;
+    warningBox = `<div class="box red">🔴 危險<br><br>極可能發生中暑、熱痙攣和熱衰竭。長時間暴露在陽光下或進行體力活動有可能發生嚴重中暑。建議市民避免戶外劇烈活動、穿著輕便及淺色的衣物、補充足夠水分，特別關注易受影響的族群。</div>`;
   } 
   else if (AT >= 54.5) {
-    warningBox = `<div class="box purple">🟣 極度危險<br><br>極可能發生嚴重中暑（熱射病）。請避免所有戶外活動並尋找冷氣場所。</div>`;
+    warningBox = `<div class="box purple">🟣 極度危險<br><br>極可能發生嚴重中暑（熱射病）。這是威脅生命的情況。建議市民避免所有戶外活動及補充足夠水分，並尋找有空調的庇護所，若出現症狀請撥打急救電話。</div>`;
   } 
   else {
     warningBox = `<div class="box safe">✅ 正常</div>`;
