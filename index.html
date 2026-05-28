@@ -160,6 +160,7 @@ button:hover {
   width: 80%;
   margin: 20px;
   font-size: 16px;
+  margin: 20px auto;
 }
 
 .heat-table th, .heat-table td {
@@ -220,6 +221,42 @@ button:hover {
 
 </div>
 
+<div id="result"></div>
+
+<!-- ✅ ADD TABLE HERE -->
+<table class="heat-table">
+  <tr>
+    <th>酷熱指數</th>
+    <th>分類</th>
+  </tr>
+
+  <tr class="purple">
+    <td>>=54.5</td>
+    <td>極度危險</td>
+  </tr>
+
+  <tr class="red">
+    <td>45.5 - 54.4</td>
+    <td>危險</td>
+  </tr>
+
+  <tr class="orange">
+    <td>39.5 - 45.4</td>
+    <td>特別注意</td>
+  </tr>
+
+  <tr class="yellow">
+    <td>35.5 - 39.4</td>
+    <td>注意</td>
+  </tr>
+
+  <tr class="safe">
+    <td><35.5</td>
+    <td>正常</td>
+  </tr>
+</table>
+``
+
 <script>
 
 /* ✅ MENU */
@@ -257,9 +294,28 @@ function calculate() {
            0.00072546 * T * RH * RH -
            0.000003582 * T * T * RH * RH;
 
+  let warningBox = "";
+
+  if (AT >= 35.5 && AT <= 39.4999) {
+    warningBox = `<div class="box yellow">🟡 注意<br><br>長時間暴露在陽光下或進行體力活動可能會導致疲勞。請保持水分補充，並在陰涼處休息。</div>`;
+  } 
+  else if (AT >= 39.5 && AT <= 45.4999) {
+    warningBox = `<div class="box orange">🟠 特別注意<br><br>長時間暴露在陽光下或進行體力活動可能導致中暑、肌肉抽筋和熱衰竭。建議減少戶外劇烈活動、穿著輕便衣物、補充水分。</div>`;
+  } 
+  else if (AT >= 45.5 && AT <= 54.4999) {
+    warningBox = `<div class="box red">🔴 危險<br><br>極可能發生中暑、熱痙攣和熱衰竭。建議避免戶外劇烈活動並補充水分。</div>`;
+  } 
+  else if (AT >= 54.5) {
+    warningBox = `<div class="box purple">🟣 極度危險<br><br>極可能發生嚴重中暑（熱射病）。請避免所有戶外活動並尋找冷氣場所。</div>`;
+  } 
+  else {
+    warningBox = `<div class="box safe">✅ 正常</div>`;
+  }
+
   document.getElementById("result").innerHTML =
-    `<b>酷熱指數: ${AT.toFixed(2)} °C</b>`;
+    `<b>酷熱指數: ${AT.toFixed(2)} °C</b>` + warningBox;
 }
+
 
 </script>
 
