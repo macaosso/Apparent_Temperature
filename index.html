@@ -7,16 +7,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:"Noto Sans TC",Arial,sans-serif;}
-body{background:#738692; padding:20px;}
+body{background:#ffffff; padding:20px;}
 
-/* ===== Fix Header Full Width Stick Margin (no side gap) ===== */
+/* 修復Header不貼邊：抵消body padding，頂部導航滿寬 */
 .header {
   background: #1f3a4d;
   color: white;
   padding: 25px 20px;
   display:flex;
   align-items:center;
-  margin:0 -20px 0 -20px; /* extend full body width eliminate side gap */
+  margin:0 -20px;
 }
 .title { font-size: 20px; font-weight: bold; margin-left:10px; }
 .logo { height:40px; }
@@ -54,30 +54,42 @@ body{background:#738692; padding:20px;}
   .nav a{padding:12px 15px;}
 }
 
-/* ===== 2 Column Grid Layout same as reference screenshot ===== */
-.page-grid{
-  display:grid;
-  grid-template-columns: 1fr 1fr;
-  gap:24px;
-  max-width:1400px;
+/* 主輸入卡片 */
+.input-card{
+  max-width:600px;
   margin:30px auto;
-}
-@media(max-width:900px){
-  .page-grid{grid-template-columns:1fr;}
-}
-
-/* Card style match your screenshot light blue border + pale bg */
-.calc-card{
-  background:#eef8f9;
-  padding:22px;
-  border:2px solid #82bbbb;
+  background:#fff;
+  padding:24px;
+  border:2px solid #4fa6a6;
   border-radius:12px;
 }
+.title-bar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:20px;
+}
 .card-title{
-  font-size:20px;
+  font-size:22px;
   font-weight:bold;
   color:#1f3a4d;
+}
+.help-btn{
+  width:34px;height:34px;
+  border-radius:50%;
+  background:#4fa6a6;
+  color:#fff;
+  border:none;
+  font-size:16px;
+  cursor:pointer;
+}
+#faq{
+  background:#e6f7f7;
+  padding:16px;
+  border-radius:9px;
   margin-bottom:20px;
+  font-size:15px;
+  display:none;
 }
 
 input{
@@ -87,19 +99,17 @@ input{
   border:1px solid #b8d8d8;
   border-radius:8px;
   font-size:16px;
-  background:#fff;
 }
 input:focus{
   outline:none;
   border-color:#4fa6a6;
 }
 
-/* Button: Green primary / Grey cancel same your design */
 .btn-row{
   display:grid;
   grid-template-columns:2fr 1fr;
   gap:12px;
-  margin:12px 0 18px;
+  margin:10px 0 20px;
 }
 .calc-btn{
   padding:13px;
@@ -107,7 +117,7 @@ input:focus{
   border-radius:9px;
   font-size:16px;
   font-weight:bold;
-  background:#589e9c;
+  background:#4fa6a6;
   color:#fff;
   cursor:pointer;
 }
@@ -121,19 +131,39 @@ input:focus{
   cursor:pointer;
 }
 
-/* Three separated result boxes */
-.res-box{
-  padding:12px 16px;
-  margin:9px 0;
-  background:#fff;
-  border-left:3px solid #589e9c;
-  border-radius:7px;
-  font-size:16px;
+/* 三個結果卡片：桌面一行3格，手機一行1格 */
+.result-wrap{
+  max-width:1100px;
+  margin:0 auto 30px;
+  display:grid;
+  grid-template-columns: repeat(3,1fr);
+  gap:16px;
 }
+@media(max-width:720px){
+  .result-wrap{grid-template-columns:1fr;}
+}
+.single-res-box{
+  background:#f4fafa;
+  border:2px solid #4fa6a6;
+  border-radius:10px;
+  padding:18px;
+}
+.res-name{
+  font-size:16px;
+  color:#1f3a4d;
+  font-weight:bold;
+  margin-bottom:8px;
+}
+.res-value{
+  font-size:20px;
+}
+
+/* 風險提示色塊 */
 .warn-box{
+  max-width:600px;
+  margin:0 auto 24px;
   padding:15px;
   border-radius:9px;
-  margin-top:12px;
   line-height:1.6;
 }
 .yellow { background-color: #fdffcc; color: #8f8a00; }
@@ -142,59 +172,33 @@ input:focus{
 .purple { background-color: #f0d6ff; color: #800080; }
 .safe { background-color: #e6ffe6; color: #006600; }
 
-/* Right unit convert dropdown layout same screenshot */
-.select-row{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:12px;
-  margin:10px 0 14px;
-}
-select{
-  padding:12px;
-  border:1px solid #b8d8d8;
-  border-radius:8px;
-  font-size:15px;
-  background:#fff;
-}
-.result-field{
-  width:100%;
-  min-height:48px;
-  padding:12px;
-  background:#fff;
-  border-left:3px solid #589e9c;
-  border-radius:7px;
-  margin-bottom:22px;
-}
-
 .bottom-img{
   width:60%;
   max-width:180px;
   display:block;
   margin:24px auto 0;
 }
-.help-btn{
-  width:34px;height:34px;
-  border-radius:50%;
-  background:#589e9c;
-  color:#fff;
-  border:none;
+
+/* 酷熱指數分級表格 */
+.table-card{
+  max-width:540px;
+  margin:0 auto 30px;
+  background:#fff;
+  padding:22px;
+  border:2px solid #4fa6a6;
+  border-radius:14px;
+}
+.heat-table{
+  width:100%;
+  border-collapse:collapse;
   font-size:16px;
-  cursor:pointer;
 }
-.title-bar{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:20px;
+.heat-table th,.heat-table td{
+  border:1px solid #999;
+  padding:12px;
+  text-align:center;
 }
-#faq{
-  background:#e6f7f7;
-  padding:16px;
-  border-radius:9px;
-  margin-bottom:20px;
-  font-size:15px;
-  display:none;
-}
+.heat-table th{background:#e6f7f7;color:#1f3a4d;}
 </style>
 </head>
 
@@ -217,104 +221,68 @@ select{
   </div>
 </div>
 
-<div class="page-grid">
-  <!-- Left Side: Heat Index / AT / Dew Calc -->
-  <div class="calc-card">
-    <div class="title-bar">
-      <div class="card-title">酷熱/體感/露點溫度計算器</div>
-      <button class="help-btn" onclick="toggleFAQ()">❓</button>
-    </div>
-
-    <div id="faq">
-      <h3>參數說明</h3>
-      <p><b>酷熱指數：</b>NOAA標準多項式公式<br>
-      <b>體感溫度：</b>AT=1.04T+0.2e−0.65V−2.7，V=風速km/h<br>
-      <b>露點溫度：</b>Tetens氣象標準公式</p>
-    </div>
-
-    <input type="number" id="temp" placeholder="氣溫 (°C)">
-    <input type="number" id="humidity" placeholder="相對濕度 (%)">
-    <input type="number" id="wind" placeholder="風速 (km/h)｜留空預設=0">
-
-    <div class="btn-row">
-      <button class="calc-btn" onclick="calculate()">一鍵計算三項數值</button>
-      <button class="clear-btn" onclick="clearAll()">清空</button>
-    </div>
-
-    <div id="result"></div>
-    <img src="MSSO (1).png" class="bottom-img">
+<!-- 輸入區 -->
+<div class="input-card">
+  <div class="title-bar">
+    <div class="card-title">酷熱/體感/露點溫度計算器</div>
+    <button class="help-btn" onclick="toggleFAQ()">❓</button>
+  </div>
+  <div id="faq">
+    <h3>參數說明</h3>
+    <p><b>酷熱指數：</b>NOAA標準多項式公式<br>
+    <b>體感溫度：</b>AT=1.04T+0.2e−0.65V−2.7，V=風速km/h<br>
+    <b>露點溫度：</b>Tetens氣象標準公式</p>
   </div>
 
-  <!-- Right Side: Unit Conversion same your screenshot -->
-  <div class="calc-card">
-    <div class="card-title">氣象常用單位換算</div>
+  <input type="number" id="temp" placeholder="氣溫 (°C)">
+  <input type="number" id="humidity" placeholder="相對濕度 (%)">
+  <input type="number" id="wind" placeholder="風速 (km/h)｜留空預設=0">
 
-    <!-- Distance -->
-    <div style="margin-bottom:24px;">
-      <div style="font-weight:bold;margin-bottom:10px;">距離換算</div>
-      <input id="disIn" placeholder="輸入數值">
-      <div class="select-row">
-        <select id="disFrom">
-          <option>公里(km)</option>
-          <option>海里(nm)</option>
-          <option>英里(mile)</option>
-        </select>
-        <select id="disTo">
-          <option>海里(nm)</option>
-          <option>公里(km)</option>
-          <option>英里(mile)</option>
-        </select>
-      </div>
-      <button class="calc-btn" style="width:auto;padding:10px 16px;margin-bottom:10px;" onclick="convertDis()">執行換算</button>
-      <div class="result-field" id="disRes">換算結果</div>
-    </div>
-
-    <!-- Wind Speed -->
-    <div style="margin-bottom:24px;">
-      <div style="font-weight:bold;margin-bottom:10px;">風速換算</div>
-      <input id="spdIn" placeholder="輸入數值">
-      <div class="select-row">
-        <select id="spdFrom">
-          <option>km/h</option>
-          <option>knot(節)</option>
-          <option>m/s</option>
-          <option>mph(英里/小時)</option>
-        </select>
-        <select id="spdTo">
-          <option>knot(節)</option>
-          <option>km/h</option>
-          <option>m/s</option>
-          <option>mph(英里/小時)</option>
-        </select>
-      </div>
-      <button class="calc-btn" style="width:auto;padding:10px 16px;margin-bottom:10px;" onclick="convertSpd()">執行換算</button>
-      <div class="result-field" id="spdRes">換算結果</div>
-    </div>
-
-    <!-- Temp -->
-    <div>
-      <div style="font-weight:bold;margin-bottom:10px;">氣溫換算</div>
-      <input id="tmpIn" placeholder="輸入溫度">
-      <div class="select-row">
-        <select id="tmpFrom">
-          <option>攝氏(℃)</option>
-          <option>華氏(℉)</option>
-          <option>開爾文(K)</option>
-        </select>
-        <select id="tmpTo">
-          <option>華氏(℉)</option>
-          <option>攝氏(℃)</option>
-          <option>開爾文(K)</option>
-        </select>
-      </div>
-      <button class="calc-btn" style="width:auto;padding:10px 16px;margin-bottom:10px;" onclick="convertTmp()">執行換算</button>
-      <div class="result-field" id="tmpRes">換算結果</div>
-    </div>
+  <div class="btn-row">
+    <button class="calc-btn" onclick="calculate()">一鍵計算三項數值</button>
+    <button class="clear-btn" onclick="clearAll()">清空</button>
   </div>
+
+  <img src="MSSO (1).png" class="bottom-img">
+</div>
+
+<!-- 三個獨立結果框：桌面3並排，手機單列 -->
+<div class="result-wrap" id="resultWrap"></div>
+
+<!-- 風險提示 -->
+<div id="warnWrap"></div>
+
+<!-- 分級表格 -->
+<div class="table-card">
+  <table class="heat-table">
+    <tr>
+      <th>酷熱指數(°C)</th>
+      <th>風險分類</th>
+    </tr>
+    <tr class="purple">
+      <td>≥54.5</td>
+      <td>極度危險</td>
+    </tr>
+    <tr class="red">
+      <td>45.5 ~ 54.4</td>
+      <td>危險</td>
+    </tr>
+    <tr class="orange">
+      <td>39.5 ~ 45.4</td>
+      <td>特別注意</td>
+    </tr>
+    <tr class="yellow">
+      <td>35.5 ~ 39.4</td>
+      <td>注意</td>
+    </tr>
+    <tr class="safe">
+      <td>＜35.5</td>
+      <td>正常</td>
+    </tr>
+  </table>
 </div>
 
 <script>
-// Menu
 function toggleMenu() {
   const nav = document.getElementById("navMenu");
   const btn = document.querySelector(".menu-toggle");
@@ -325,92 +293,64 @@ function toggleFAQ() {
   const faq = document.getElementById("faq");
   faq.style.display = faq.style.display === "none" ? "block" : "none";
 }
-// Clear all input
 function clearAll(){
   document.getElementById("temp").value="";
   document.getElementById("humidity").value="";
   document.getElementById("wind").value="";
-  document.getElementById("result").innerHTML="";
+  document.getElementById("resultWrap").innerHTML="";
+  document.getElementById("warnWrap").innerHTML="";
 }
 
-// Main Heat / AT / Dew calculate
 function calculate() {
   let T = parseFloat(document.getElementById("temp").value);
   let RH = parseFloat(document.getElementById("humidity").value);
   let V = parseFloat(document.getElementById("wind").value ?? 0);
   if(isNaN(V)) V=0;
-  const resDom = document.getElementById("result");
+
+  const resWrap = document.getElementById("resultWrap");
+  const warnWrap = document.getElementById("warnWrap");
+
   if (isNaN(T) || isNaN(RH) || RH<0 || RH>100){
-    resDom.innerHTML = `<div class="warn-box red">請輸入合法數值：濕度0~100%</div>`;
+    resWrap.innerHTML="";
+    warnWrap.innerHTML = `<div class="warn-box red">請輸入合法數值：濕度0~100%</div>`;
     return;
   }
-  // NOAA Heat Index
+
+  // 酷熱指數 NOAA
   let HI = -8.784695 +1.61139411*T +2.338549*RH -0.14611605*T*RH -0.012308094*T*T -0.016424828*RH*RH +0.002211732*T*T*RH +0.00072546*T*RH*RH -0.000003582*T*T*RH*RH;
-  // Vapor e
+  // 水汽壓
   let e = (RH/100)*6.105*Math.exp((17.27*T)/(237.7+T));
+  //體感溫度
   let AT = 1.04*T +0.2*e -0.65*V -2.7;
-  // Dew Tetens
+  //露點Tetens
   const a=17.27,b=237.7;
   let gamma = (a*T)/(b+T)+Math.log(RH/100);
   let TD = (b*gamma)/(a-gamma);
 
-  let warnBox="";
-  if(HI>=54.5) warnBox=`<div class="warn-box purple">🟣 極度危險｜極易熱射病</div>`;
-  else if(HI>=45.5) warnBox=`<div class="warn-box red">🔴 危險｜易中暑熱衰竭</div>`;
-  else if(HI>=39.5) warnBox=`<div class="warn-box orange">🟠 特別注意｜減少戶外活動</div>`;
-  else if(HI>=35.5) warnBox=`<div class="warn-box yellow">🟡 注意｜適量補水</div>`;
-  else warnBox=`<div class="warn-box safe">✅ 正常舒適</div>`;
-
-  let html=`
-    <div class="res-box"><strong>🔥 酷熱指數：</strong>${HI.toFixed(2)} ℃</div>
-    <div class="res-box"><strong>🌬️ 體感溫度(V=${V}km/h)：</strong>${AT.toFixed(2)} ℃</div>
-    <div class="res-box"><strong>💧 露點溫度：</strong>${TD.toFixed(2)} ℃</div>
+  //三個獨立卡片
+  resWrap.innerHTML = `
+    <div class="single-res-box">
+      <div class="res-name">🔥 酷熱指數</div>
+      <div class="res-value">${HI.toFixed(2)} ℃</div>
+    </div>
+    <div class="single-res-box">
+      <div class="res-name">🌬️ 體感溫度(V=${V}km/h)</div>
+      <div class="res-value">${AT.toFixed(2)} ℃</div>
+    </div>
+    <div class="single-res-box">
+      <div class="res-name">💧 露點溫度</div>
+      <div class="res-value">${TD.toFixed(2)} ℃</div>
+    </div>
   `;
-  resDom.innerHTML=html+warnBox;
-}
 
-// Unit Convert Functions
-const kmBase = {km:1, nm:1.852, mile:1.60934};
-const spdBase = {"km/h":1, "knot(節)":1.852, "m/s":3.6, "mph(英里/小時)":1.60934};
-function convertDis(){
-  let n=Number(document.getElementById("disIn").value);
-  let f=document.getElementById("disFrom").value;
-  let t=document.getElementById("disTo").value;
-  if(isNaN(n)) return document.getElementById("disRes").innerText="請輸入數字";
-  let km = n*kmBase[f];
-  let out;
-  if(t=="公里(km)") out=km;
-  else if(t=="海里(nm)") out=km/kmBase.nm;
-  else out=km/kmBase.mile;
-  document.getElementById("disRes").innerText=`${n} ${f} = ${out.toFixed(3)} ${t}`;
-}
-function convertSpd(){
-  let n=Number(document.getElementById("spdIn").value);
-  let f=document.getElementById("spdFrom").value;
-  let t=document.getElementById("spdTo").value;
-  if(isNaN(n)) return document.getElementById("spdRes").innerText="請輸入數字";
-  let kh = n*spdBase[f];
-  let out;
-  if(t=="km/h") out=kh;
-  else if(t=="knot(節)") out=kh/spdBase["knot(節)"];
-  else if(t=="m/s") out=kh/spdBase["m/s"];
-  else out=kh/spdBase["mph(英里/小時)"];
-  document.getElementById("spdRes").innerText=`${n} ${f} = ${out.toFixed(2)} ${t}`;
-}
-function convertTmp(){
-  let n=Number(document.getElementById("tmpIn").value);
-  let f=document.getElementById("tmpFrom").value;
-  let t=document.getElementById("tmpTo").value;
-  if(isNaN(n)) return document.getElementById("tmpRes").innerText="請輸入數字";
-  let c;
-  if(f=="攝氏(℃)") c=n;
-  else if(f=="華氏(℉)") c=(n-32)/1.8;
-  else c=n-273.15;
-  let out;
-  if(t=="攝氏(℃)") out=c;
-  else if(t=="華氏(℉)") out=c*1.8+32;
-  else out=c+273.15;
-  document.getElementById("tmpRes").innerText=`${n} ${f} = ${out.toFixed(2)} ${t}`;
+  //風險文字
+  let warnText = "";
+  if(HI>=54.5) warnText=`<div class="warn-box purple">🟣 極度危險｜極易引發熱射病，避免外出</div>`;
+  else if(HI>=45.5) warnText=`<div class="warn-box red">🔴 危險｜容易中暑、熱衰竭，減少戶外活動</div>`;
+  else if(HI>=39.5) warnText=`<div class="warn-box orange">🟠 特別注意｜高溫悶熱，適時補充水分</div>`;
+  else if(HI>=35.5) warnText=`<div class="warn-box yellow">🟡 注意｜長時間活動容易疲勞</div>`;
+  else warnText=`<div class="warn-box safe">✅ 環境溫濕度正常，體感舒適</div>`;
+  warnWrap.innerHTML = warnText;
 }
 </script>
 </body>
