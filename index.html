@@ -273,10 +273,10 @@ input:focus, select:focus{
 
   <!-- 2.酷熱指數 HI 計算 + 4檔高溫分級 -->
   <div class="calc-card">
-    <div class="card-title">酷熱指數 Heat Index HI(NOAA公式)｜輸入℉，自動轉℃+危險分級</div>
+    <div class="card-title">酷熱指數 Heat Index</div>
     <div class="form-row">
       <div>
-        <label>氣溫 T (℉)</label>
+        <label>氣溫 T (℃)</label>
         <input id="hi_T" type="number" step="0.1" placeholder="華氏溫度">
       </div>
       <div>
@@ -288,12 +288,12 @@ input:focus, select:focus{
       <button class="calc-btn" onclick="calcHI()">計算酷熱指數</button>
       <button class="clear-btn" onclick="clearHI()">清空</button>
     </div>
-    <div id="resHI" class="result-box result-empty">酷熱指數(℉/℃)+危險等級</div>
+    <div id="resHI" class="result-box result-empty">酷熱指數(℃)+危險等級</div>
   </div>
 
   <!--3.露點溫度 Td 計算 + 3檔舒適度分級 -->
   <div class="calc-card">
-    <div class="card-title">露點溫度 Td｜馬格努斯公式 a=17.27,b=237.7 + 悶熱舒適分級</div>
+    <div class="card-title">露點溫度 Td</div>
     <div class="form-row">
       <div>
         <label>氣溫 T (℃)</label>
@@ -308,7 +308,7 @@ input:focus, select:focus{
       <button class="calc-btn" onclick="calcTd()">計算露點溫度</button>
       <button class="clear-btn" onclick="clearTd()">清空</button>
     </div>
-    <div id="resTd" class="result-box result-empty">露點溫度+舒適等級</div>
+    <div id="resTd" class="result-box result-empty">露點溫度</div>
   </div>
 </div>
 
@@ -349,7 +349,7 @@ function calcAT(){
   else if(AT>=3.5){levelText="非常寒冷";levelClass="at-lv2";}
   else {levelText="極為寒冷";levelClass="at-lv1";}
   resDom.classList.add(levelClass);
-  resDom.innerText = `水汽壓 e = ${e.toFixed(3)} hPa\n體感溫度 AT = ${AT.toFixed(2)} ℃｜等級：${levelText}`;
+  resDom.innerText = `體感溫度 AT = ${AT.toFixed(2)} ℃｜等級：${levelText}`;
 }
 function clearAT(){
   ["at_T","at_RH","at_V"].forEach(id=>document.getElementById(id).value="");
@@ -388,7 +388,7 @@ function calcHI(){
   else if(HIc>=39.5){levelText="警戒";levelClass="hi-lv1";}
   else {levelText="正常(低於警戒線)";}
   if(levelClass) resDom.classList.add(levelClass);
-  resDom.innerText = `酷熱指數 HI = ${HI.toFixed(2)} ℉ ≈ ${HIc.toFixed(2)} ℃｜等級：${levelText}`;
+  resDom.innerText = `酷熱指數 HI = ${HIc.toFixed(2)} ℃｜等級：${levelText}`;
 }
 function clearHI(){
   ["hi_T","hi_RH"].forEach(id=>document.getElementById(id).value="");
@@ -418,12 +418,12 @@ function calcTd(){
   else if(Td>=18){levelText="舒適";levelClass="td-lv1";}
   else {levelText="乾爽舒適";}
   if(levelClass) resDom.classList.add(levelClass);
-  resDom.innerText = `露點溫度 Td = ${Td.toFixed(2)} ℃｜舒適等級：${levelText}`;
+  resDom.innerText = `露點溫度 Td = ${Td.toFixed(2)} ℃｜等級：${levelText}`;
 }
 function clearTd(){
   ["td_T","td_RH"].forEach(id=>document.getElementById(id).value="");
   const dom = document.getElementById("resTd");
-  dom.innerText = "露點溫度+舒適等級";
+  dom.innerText = "露點溫度";
   dom.className = "result-box result-empty";
 }
 </script>
