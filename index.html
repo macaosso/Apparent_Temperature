@@ -9,14 +9,14 @@
 *{margin:0;padding:0;box-sizing:border-box;font-family:"Noto Sans TC",Arial,sans-serif;}
 body{background:#ffffff; padding:20px;}
 
-/* 修復Header不貼邊：抵消body padding，頂部導航滿寬 */
+/* Fix full width header stick page margin */
 .header {
   background: #1f3a4d;
   color: white;
   padding: 25px 20px;
   display:flex;
   align-items:center;
-  margin:0 -20px;
+  margin:-20 -20px;
 }
 .title { font-size: 20px; font-weight: bold; margin-left:10px; }
 .logo { height:40px; }
@@ -24,7 +24,7 @@ body{background:#ffffff; padding:20px;}
 .menu-container {
   position: relative;
   z-index: 3000;
-  margin:0 -20px;
+  margin:-20 -20px;
 }
 .menu-toggle {
   display: none;
@@ -54,9 +54,9 @@ body{background:#ffffff; padding:20px;}
   .nav a{padding:12px 15px;}
 }
 
-/* 主輸入卡片 */
+/* Top input single card */
 .input-card{
-  max-width:600px;
+  max-width:620px;
   margin:30px auto;
   background:#fff;
   padding:24px;
@@ -131,37 +131,45 @@ input:focus{
   cursor:pointer;
 }
 
-/* 三個結果卡片：桌面一行3格，手機一行1格 */
-.result-wrap{
-  max-width:1100px;
-  margin:0 auto 30px;
-  display:grid;
-  grid-template-columns: repeat(3,1fr);
-  gap:16px;
-}
-@media(max-width:720px){
-  .result-wrap{grid-template-columns:1fr;}
-}
-.single-res-box{
-  background:#f4fafa;
-  border:2px solid #4fa6a6;
-  border-radius:10px;
-  padding:18px;
-}
-.res-name{
-  font-size:16px;
-  color:#1f3a4d;
-  font-weight:bold;
-  margin-bottom:8px;
-}
-.res-value{
-  font-size:20px;
+.bottom-img{
+  width:60%;
+  max-width:180px;
+  display:block;
+  margin:24px auto 0;
 }
 
-/* 風險提示色塊 */
+/* Three separate independent result boxes container: Desktop 3 column, mobile 1 column */
+.result-container{
+  max-width:1150px;
+  margin:0 auto 25px;
+  display:grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap:18px;
+}
+@media(max-width:720px){
+  .result-container{grid-template-columns:1fr;}
+}
+/* every result is fully standalone separate box */
+.result-block{
+  background:#f4fafa;
+  border:2px solid #4fa6a6;
+  border-radius:11px;
+  padding:20px;
+}
+.res-heading{
+  font-size:17px;
+  color:#1f3a4d;
+  font-weight:bold;
+  margin-bottom:9px;
+}
+.res-data{
+  font-size:22px;
+}
+
+/* Warning box */
 .warn-box{
-  max-width:600px;
-  margin:0 auto 24px;
+  max-width:620px;
+  margin:0 auto 30px;
   padding:15px;
   border-radius:9px;
   line-height:1.6;
@@ -172,18 +180,10 @@ input:focus{
 .purple { background-color: #f0d6ff; color: #800080; }
 .safe { background-color: #e6ffe6; color: #006600; }
 
-.bottom-img{
-  width:60%;
-  max-width:180px;
-  display:block;
-  margin:24px auto 0;
-}
-
-/* 酷熱指數分級表格 */
+/* Heat index table */
 .table-card{
   max-width:540px;
   margin:0 auto 30px;
-  background:#fff;
   padding:22px;
   border:2px solid #4fa6a6;
   border-radius:14px;
@@ -221,7 +221,7 @@ input:focus{
   </div>
 </div>
 
-<!-- 輸入區 -->
+<!-- Input Area -->
 <div class="input-card">
   <div class="title-bar">
     <div class="card-title">酷熱/體感/露點溫度計算器</div>
@@ -246,13 +246,13 @@ input:focus{
   <img src="MSSO (1).png" class="bottom-img">
 </div>
 
-<!-- 三個獨立結果框：桌面3並排，手機單列 -->
-<div class="result-wrap" id="resultWrap"></div>
+<!-- Three FULLY SEPARATE INDEPENDENT BOXES -->
+<div class="result-container" id="resultContainer"></div>
 
-<!-- 風險提示 -->
-<div id="warnWrap"></div>
+<!-- Warning Message Area -->
+<div id="warningContainer"></div>
 
-<!-- 分級表格 -->
+<!-- Heat Index Level Table -->
 <div class="table-card">
   <table class="heat-table">
     <tr>
@@ -294,62 +294,63 @@ function toggleFAQ() {
   faq.style.display = faq.style.display === "none" ? "block" : "none";
 }
 function clearAll(){
-  document.getElementById("temp").value="";
-  document.getElementById("humidity").value="";
-  document.getElementById("wind").value="";
-  document.getElementById("resultWrap").innerHTML="";
-  document.getElementById("warnWrap").innerHTML="";
+  document.getElementById("temp").value = "";
+  document.getElementById("humidity").value = "";
+  document.getElementById("wind").value = "";
+  document.getElementById("resultContainer").innerHTML = "";
+  document.getElementById("warningContainer").innerHTML = "";
 }
 
 function calculate() {
   let T = parseFloat(document.getElementById("temp").value);
   let RH = parseFloat(document.getElementById("humidity").value);
   let V = parseFloat(document.getElementById("wind").value ?? 0);
-  if(isNaN(V)) V=0;
+  if(isNaN(V)) V = 0;
 
-  const resWrap = document.getElementById("resultWrap");
-  const warnWrap = document.getElementById("warnWrap");
+  const resWrap = document.getElementById("resultContainer");
+  const warnWrap = document.getElementById("warningContainer");
+  resWrap.innerHTML = "";
+  warnWrap.innerHTML = "";
 
-  if (isNaN(T) || isNaN(RH) || RH<0 || RH>100){
-    resWrap.innerHTML="";
-    warnWrap.innerHTML = `<div class="warn-box red">請輸入合法數值：濕度0~100%</div>`;
+  if (isNaN(T) || isNaN(RH) || RH < 0 || RH > 100) {
+    warnWrap.innerHTML = `<div class="warn-box red">請輸入合法數值：濕度範圍0~100%</div>`;
     return;
   }
 
-  // 酷熱指數 NOAA
-  let HI = -8.784695 +1.61139411*T +2.338549*RH -0.14611605*T*RH -0.012308094*T*T -0.016424828*RH*RH +0.002211732*T*T*RH +0.00072546*T*RH*RH -0.000003582*T*T*RH*RH;
-  // 水汽壓
+  // NOAA Heat Index
+  let HI = -8.784695 + 1.61139411*T + 2.338549*RH - 0.14611605*T*RH - 0.012308094*T*T - 0.016424828*RH*RH + 0.002211732*T*T*RH + 0.00072546*T*RH*RH - 0.000003582*T*T*RH*RH;
+  // Vapor pressure
   let e = (RH/100)*6.105*Math.exp((17.27*T)/(237.7+T));
-  //體感溫度
-  let AT = 1.04*T +0.2*e -0.65*V -2.7;
-  //露點Tetens
+  // Apparent Temperature
+  let AT = 1.04*T + 0.2*e - 0.65*V - 2.7;
+  // Dew Point Tetens
   const a=17.27,b=237.7;
   let gamma = (a*T)/(b+T)+Math.log(RH/100);
   let TD = (b*gamma)/(a-gamma);
 
-  //三個獨立卡片
+  // Render three fully separate standalone boxes
   resWrap.innerHTML = `
-    <div class="single-res-box">
-      <div class="res-name">🔥 酷熱指數</div>
-      <div class="res-value">${HI.toFixed(2)} ℃</div>
+    <div class="result-block">
+      <div class="res-heading">🔥 酷熱指數</div>
+      <div class="res-data">${HI.toFixed(2)} ℃</div>
     </div>
-    <div class="single-res-box">
-      <div class="res-name">🌬️ 體感溫度(V=${V}km/h)</div>
-      <div class="res-value">${AT.toFixed(2)} ℃</div>
+    <div class="result-block">
+      <div class="res-heading">🌬️ 體感溫度(V=${V}km/h)</div>
+      <div class="res-data">${AT.toFixed(2)} ℃</div>
     </div>
-    <div class="single-res-box">
-      <div class="res-name">💧 露點溫度</div>
-      <div class="res-value">${TD.toFixed(2)} ℃</div>
+    <div class="result-block">
+      <div class="res-heading">💧 露點溫度</div>
+      <div class="res-data">${TD.toFixed(2)} ℃</div>
     </div>
   `;
 
-  //風險文字
+  // Warning text
   let warnText = "";
-  if(HI>=54.5) warnText=`<div class="warn-box purple">🟣 極度危險｜極易引發熱射病，避免外出</div>`;
-  else if(HI>=45.5) warnText=`<div class="warn-box red">🔴 危險｜容易中暑、熱衰竭，減少戶外活動</div>`;
-  else if(HI>=39.5) warnText=`<div class="warn-box orange">🟠 特別注意｜高溫悶熱，適時補充水分</div>`;
-  else if(HI>=35.5) warnText=`<div class="warn-box yellow">🟡 注意｜長時間活動容易疲勞</div>`;
-  else warnText=`<div class="warn-box safe">✅ 環境溫濕度正常，體感舒適</div>`;
+  if(HI >=54.5) warnText = `<div class="warn-box purple">🟣 極度危險｜極易引發熱射病，避免外出</div>`;
+  else if(HI >=45.5) warnText = `<div class="warn-box red">🔴 危險｜容易中暑、熱衰竭，減少戶外活動</div>`;
+  else if(HI >=39.5) warnText = `<div class="warn-box orange">🟠 特別注意｜高溫悶熱，適時補充水分</div>`;
+  else if(HI >=35.5) warnText = `<div class="warn-box yellow">🟡 注意｜長時間活動容易疲勞</div>`;
+  else warnText = `<div class="warn-box safe">✅ 環境溫濕度正常，體感舒適</div>`;
   warnWrap.innerHTML = warnText;
 }
 </script>
