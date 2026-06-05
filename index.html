@@ -349,7 +349,7 @@ function calcAT(){
   else if(AT>=3.5){levelText="非常寒冷";levelClass="at-lv2";}
   else {levelText="極為寒冷";levelClass="at-lv1";}
   resDom.classList.add(levelClass);
-  resDom.innerText = `體感溫度 AT = ${AT.toFixed(2)} ℃｜等級：${levelText}`;
+  resDom.innerText = `體感溫度 AT = ${AT.toFixed(2)} ℃\n等級：${levelText}`;
 }
 function clearAT(){
   ["at_T","at_RH","at_V"].forEach(id=>document.getElementById(id).value="");
@@ -360,16 +360,19 @@ function clearAT(){
 
 // ====================== 2.酷熱指數 HI + 4檔危險分級 ======================
 function calcHI(){
-  const Tf = Number(document.getElementById("hi_T").value);
+  const Tc = Number(document.getElementById("hi_T").value); //使用者輸入攝氏
   const RH = Number(document.getElementById("hi_RH").value);
   const resDom = document.getElementById("resHI");
   resDom.className="result-box";
-  if(isNaN(Tf)||isNaN(RH)||RH<0||RH>100){
+  if(isNaN(Tc)||isNaN(RH)||RH<0||RH>100){
     resDom.className = "result-box result-error";
-    resDom.innerText = "數據錯誤：RH需在0~100之間，溫度填寫華氏℉";
+    resDom.innerText = "數據錯誤：RH需在0~100之間，溫度填寫攝氏℃";
     return;
   }
-  //NOAA酷熱指數公式
+  // C → F
+  const Tf = Tc * 1.8 + 32;
+
+  // NOAA Heat Index Formula (use °F)
   let HI = -42.379
           + 2.04901523*Tf
           + 10.14333127*RH
@@ -379,16 +382,16 @@ function calcHI(){
           + 0.00122874*Tf*Tf*RH
           + 0.00085282*Tf*RH*RH
           - 0.00000199*Tf*Tf*RH*RH;
-  const HIc = (HI -32)/1.8;
+
+  const HIc = (HI -32)/1.8; // HI°F → HI℃
   let levelText="",levelClass="";
-  //第二張HI分級(單位℃)
   if(HIc>=54.5){levelText="極度危險";levelClass="hi-lv4";}
   else if(HIc>=49.5){levelText="非常危險";levelClass="hi-lv3";}
   else if(HIc>=44.5){levelText="危險";levelClass="hi-lv2";}
   else if(HIc>=39.5){levelText="警戒";levelClass="hi-lv1";}
   else {levelText="正常(低於警戒線)";}
   if(levelClass) resDom.classList.add(levelClass);
-  resDom.innerText = `酷熱指數 HI = ${HIc.toFixed(2)} ℃｜等級：${levelText}`;
+  resDom.innerText = `酷熱指數 HI = ${HI.toFixed(2)} ℉ ≈ ${HIc.toFixed(2)} ℃ \n等級：${levelText}`;
 }
 function clearHI(){
   ["hi_T","hi_RH"].forEach(id=>document.getElementById(id).value="");
@@ -418,7 +421,7 @@ function calcTd(){
   else if(Td>=18){levelText="舒適";levelClass="td-lv1";}
   else {levelText="乾爽舒適";}
   if(levelClass) resDom.classList.add(levelClass);
-  resDom.innerText = `露點溫度 Td = ${Td.toFixed(2)} ℃｜等級：${levelText}`;
+  resDom.innerText = `露點溫度 Td = ${Td.toFixed(2)} ℃\n等級：${levelText}`;
 }
 function clearTd(){
   ["td_T","td_RH"].forEach(id=>document.getElementById(id).value="");
