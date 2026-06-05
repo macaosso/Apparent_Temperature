@@ -2,29 +2,35 @@
 <html lang="zh-Hant">
 <head>
 <meta charset="UTF-8">
-<title>酷熱/體感/露點溫度計算器 | MSSO澳門民間氣象台</title>
-<link rel="icon" type="image/png" href="MSSO (2).png">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="icons/MSSO.png">
+<title>酷熱指數｜體感溫度｜露點溫度計算 | 澳門民間氣象台 MSSO</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:"Noto Sans TC",Arial,sans-serif;}
-body{background:#ffffff; padding:20px;}
-
-/* Fix full width header stick page margin */
+/* ========== Global Base ========== */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+/* ========== Header & Navigation (Same Index Style) ========== */
 .header {
   background: #1f3a4d;
   color: white;
   padding: 25px 20px;
-  display:flex;
-  align-items:center;
-  margin:-20 -20px;
+  display: flex;
+  align-items: center;
 }
-.title { font-size: 20px; font-weight: bold; margin-left:10px; }
-.logo { height:40px; }
-
+.title {
+  font-size: 20px;
+  font-weight: bold;
+  margin-left: 10px;
+}
+.logo {
+  height: 40px;
+}
 .menu-container {
   position: relative;
   z-index: 3000;
-  margin:-20 -20px;
+  margin-left: auto;
 }
 .menu-toggle {
   display: none;
@@ -45,313 +51,380 @@ body{background:#ffffff; padding:20px;}
   text-decoration: none;
   display: block;
 }
-.nav a:hover { background: #1f4f6d; }
-
-@media (max-width: 768px) {
-  .menu-toggle {display:block;}
-  .nav {display: none;flex-direction: column;width:100%;}
-  .nav.active {display:flex;}
-  .nav a{padding:12px 15px;}
+.nav a:hover {
+  background: #1f4f6d;
 }
 
-/* Top input single card */
-.input-card{
-  max-width:620px;
-  margin:30px auto;
-  background:#fff;
-  padding:24px;
+/* ========== Page Wrap Layout ========== */
+.calc-wrap{
+  display: grid;
+  grid-template-columns: 1fr;
+  gap:35px;
+  margin:18px 35px;
+  max-width:900px;
+}
+
+/* ========== Unified Card Style (Same forecast-tab box) ========== */
+.calc-card{
   border:2px solid #4fa6a6;
   border-radius:12px;
+  background:#e6f7f7;
+  box-shadow:0 2px 8px rgba(0,0,0,0.2);
+  padding:25px;
+  transition: all 0.25s ease;
 }
-.title-bar{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:20px;
+.calc-card:hover{
+  box-shadow:0 4px 12px rgba(79,166,166,0.25);
 }
 .card-title{
-  font-size:22px;
+  font-size:19px;
   font-weight:bold;
   color:#1f3a4d;
-}
-.help-btn{
-  width:34px;height:34px;
-  border-radius:50%;
-  background:#4fa6a6;
-  color:#fff;
-  border:none;
-  font-size:16px;
-  cursor:pointer;
-}
-#faq{
-  background:#e6f7f7;
-  padding:16px;
-  border-radius:9px;
-  margin-bottom:20px;
-  font-size:15px;
-  display:none;
+  margin:0 0 20px 0;
+  padding-bottom:10px;
+  border-bottom:1px solid #b8d8d8;
 }
 
-input{
-  width:100%;
-  padding:13px 14px;
-  margin-bottom:14px;
-  border:1px solid #b8d8d8;
-  border-radius:8px;
-  font-size:16px;
+/* ========== Form Layout ========== */
+.form-row{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+  margin-bottom:16px;
 }
-input:focus{
+.form-full{
+  margin-bottom:16px;
+}
+label{
+  display:block;
+  font-size:15px;
+  margin-bottom:6px;
+  color:#333;
+}
+input, select{
+  width:100%;
+  box-sizing:border-box;
+  padding:11px 12px;
+  border:1px solid #b8d8d8;
+  border-radius:10px;
+  font-size:15px;
+  background:#fff;
+  transition:0.2s;
+}
+input:focus, select:focus{
   outline:none;
   border-color:#4fa6a6;
+  box-shadow:0 0 0 3px rgba(79,166,166,0.18);
 }
 
+/* ========== Buttons Beautified (Gradient + Hover animate) ========== */
 .btn-row{
   display:grid;
-  grid-template-columns:2fr 1fr;
-  gap:12px;
-  margin:10px 0 20px;
+  grid-template-columns: 2fr 1fr;
+  gap:10px;
+  margin-top:10px;
 }
 .calc-btn{
-  padding:13px;
+  padding:12px;
   border:none;
-  border-radius:9px;
+  border-radius:25px;
+  background: linear-gradient(135deg,#4fa6a6,#398888);
+  color:#fff;
   font-size:16px;
   font-weight:bold;
-  background:#4fa6a6;
-  color:#fff;
   cursor:pointer;
+  transition:0.3s;
+}
+.calc-btn:hover{
+  opacity:0.92;
+  transform:translateY(-2px);
 }
 .clear-btn{
-  padding:13px;
+  padding:12px;
   border:none;
-  border-radius:9px;
-  font-size:16px;
+  border-radius:25px;
   background:#cccccc;
   color:#333;
+  font-size:15px;
   cursor:pointer;
+  transition:0.3s;
 }
-
-.bottom-img{
-  width:60%;
-  max-width:180px;
-  display:block;
-  margin:24px auto 0;
+.clear-btn:hover{
+  background:#bbbbbb;
 }
-
-/* Three separate independent result boxes container: Desktop 3 column, mobile 1 column */
-.result-container{
-  max-width:1150px;
-  margin:0 auto 25px;
-  display:grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap:18px;
-}
-@media(max-width:720px){
-  .result-container{grid-template-columns:1fr;}
-}
-/* every result is fully standalone separate box */
-.result-block{
-  background:#f4fafa;
-  border:2px solid #4fa6a6;
-  border-radius:11px;
-  padding:20px;
-}
-.res-heading{
-  font-size:17px;
-  color:#1f3a4d;
+.unit-title{
+  font-size:18px;
   font-weight:bold;
-  margin-bottom:9px;
-}
-.res-data{
-  font-size:22px;
+  color:#222;
+  margin-bottom:14px;
+  display:block;
 }
 
-/* Warning box */
-.warn-box{
-  max-width:620px;
-  margin:0 auto 30px;
-  padding:15px;
-  border-radius:9px;
-  line-height:1.6;
+/* ========== Result Display Box + 分級邊色樣式 ========== */
+.result-box{
+  margin-top:18px;
+  padding:14px;
+  background:#ffffff;
+  border-left:5px solid #4fa6a6;
+  border-radius:8px;
+  font-size:15px;
+  line-height:1.7;
+  min-height:42px;
 }
-.yellow { background-color: #fdffcc; color: #8f8a00; }
-.orange { background-color: #ffe5cc; color: #cc6600; }
-.red { background-color: #ffd6d6; color: #cc0000; }
-.purple { background-color: #f0d6ff; color: #800080; }
-.safe { background-color: #e6ffe6; color: #006600; }
+.result-empty{
+  color:#777;
+}
+.result-error{
+  border-left-color:#e1665c;
+  background:#fef1f1;
+}
+/*====體感溫度AT 10級左邊框顏色(對應首張圖色標)====*/
+.at-lv10{border-left-color:#481c0c;}/*≥37.5 極為酷熱 深棕黑*/
+.at-lv9 {border-left-color:#b02820;}/*35.5~37.4非常酷熱暗紅*/
+.at-lv8 {border-left-color:#ed362c;}/*32.5~35.4酷熱亮紅*/
+.at-lv7 {border-left-color:#f28722;}/*27.5~32.4炎熱橙*/
+.at-lv6 {border-left-color:#b48228;}/*22.5~27.4溫暖土黃*/
+.at-lv5 {border-left-color:#989c2b;}/*17.5~22.4和暖黃綠*/
+.at-lv4 {border-left-color:#48b37e;}/*12.5~17.4清涼青綠*/
+.at-lv3 {border-left-color:#285b82;}/*7.5~12.4寒冷藍*/
+.at-lv2 {border-left-color:#1c2680;}/*3.5~7.4非常寒冷深藍*/
+.at-lv1 {border-left-color:#3c1559;}/*<3.5極為寒冷深紫*/
 
-/* Heat index table */
-.table-card{
-  max-width:540px;
-  margin:0 auto 30px;
-  padding:22px;
-  border:2px solid #4fa6a6;
-  border-radius:14px;
+/*====酷熱指數HI 4級顏色(第二張圖高溫危險)====*/
+.hi-lv4{border-left-color:#000000;background:#f7f7f7;}/*≥54.5極度危險黑*/
+.hi-lv3{border-left-color:#e82222;background:#fff6f6;}/*49.5~54.4非常危險紅*/
+.hi-lv2{border-left-color:#e67923;background:#fff8f0;}/*44.5~49.4危險橙*/
+.hi-lv1{border-left-color:#d4b926;background:#fffce3;}/*39.5~44.4警戒黃*/
+
+/*====露點Td 3級顏色(第三張圖悶熱舒適)====*/
+.td-lv3{border-left-color:#551080;background:#f9f4ff;}/*≥28危險紫*/
+.td-lv2{border-left-color:#9c2020;background:#fff3f3;}/*24~27.9悶熱棗紅*/
+.td-lv1{border-left-color:#2b8c30;background:#f3fff3;}/*18~23.9舒適綠*/
+
+/* ========== Mobile responsive ========== */
+@media(max-width:768px){
+  .calc-wrap{
+    grid-template-columns:1fr;
+    margin:18px 22px;
+  }
+  .menu-toggle{
+    display:block;
+  }
+  .nav{
+    display:none;
+    flex-direction:column;
+    width:100%;
+  }
+  .nav.active{
+    display:flex;
+  }
+  .nav a{
+    width:100%;
+    padding:12px 15px;
+    border-top:1px solid rgba(255,255,255,0.2);
+  }
 }
-.heat-table{
-  width:100%;
-  border-collapse:collapse;
-  font-size:16px;
-}
-.heat-table th,.heat-table td{
-  border:1px solid #999;
-  padding:12px;
-  text-align:center;
-}
-.heat-table th{background:#e6f7f7;color:#1f3a4d;}
 </style>
 </head>
-
 <body>
+<!-- Header Nav Copy from your index -->
 <div class="header">
-  <img src="MSSO (2).png" class="logo">
-  <div class="title">澳門民間氣象台 MSSO</div>
+<img src="icons/MSSO.png" class="logo">
+<div class="title">澳門民間氣象台 MSSO</div>
 </div>
-
 <div class="menu-container">
-  <div class="menu-toggle" onclick="toggleMenu()">☰</div>
-  <div class="nav" id="navMenu">
-    <a href="https://macaosso.github.io/MSSOweb/index.html">首頁</a>
-    <a href="https://macaosso.github.io/Apparent_Temperature/">酷熱指數</a>
-    <a href="https://macaosso.github.io/MSSOweb/cal_dis.html">熱帶氣旋距離計算工具</a>
-    <a href="https://macaosso.github.io/MSSOweb/tc_gis.html">熱帶氣旋路徑地圖</a>
-    <a href="https://macaosso.github.io/MSSOweb/tc.html">熱帶氣旋資訊</a>
-    <a href="https://macaosso.github.io/MSSOweb/about.html">關於我們</a>
-    <a href="https://macaosso.github.io/MSSOweb/ver.html">版本記錄</a>
-  </div>
+<div class="menu-toggle" onclick="toggleMenu()">☰</div>
+<div class="nav" id="navMenu">
+<a href="https://macaosso.github.io/MSSOweb/index.html">首頁</a>
+<a href="https://macaosso.github.io/Apparent_Temperature/">酷熱指數</a>
+<a href="https://macaosso.github.io/MSSOweb/cal_dis.html">熱帶氣旋距離計算工具</a>
+<a href="https://macaosso.github.io/MSSOweb/tc_gis.html">熱帶氣旋路徑地圖</a>
+<a href="https://macaosso.github.io/MSSOweb/tc.html">熱帶氣旋資訊</a>
+<a href="https://macaosso.github.io/MSSOweb/about.html">關於我們</a>
+<a href="https://macaosso.github.io/MSSOweb/ver.html">版本記錄</a>
+</div>
 </div>
 
-<!-- Input Area -->
-<div class="input-card">
-  <div class="title-bar">
-    <div class="card-title">酷熱/體感/露點溫度計算器</div>
-    <button class="help-btn" onclick="toggleFAQ()">❓</button>
+<!-- Main Content -->
+<div class="calc-wrap">
+  <!-- 1.體感溫度 AT 計算 + 10檔分級 -->
+  <div class="calc-card">
+    <div class="card-title">體感溫度 AT 計算｜AT = 1.04T + 0.2e − 0.65V − 2.7</div>
+    <div class="form-row">
+      <div>
+        <label>氣溫 T (℃)</label>
+        <input id="at_T" type="number" step="0.1" placeholder="例：30.5">
+      </div>
+      <div>
+        <label>相對濕度 RH (%)</label>
+        <input id="at_RH" type="number" step="1" placeholder="0~100">
+      </div>
+    </div>
+    <div class="form-full">
+      <label>風速 V (km/h)</label>
+      <input id="at_V" type="number" step="0.1" placeholder="例：5.0">
+    </div>
+    <div class="btn-row">
+      <button class="calc-btn" onclick="calcAT()">計算體感溫度</button>
+      <button class="clear-btn" onclick="clearAT()">清空</button>
+    </div>
+    <div id="resAT" class="result-box result-empty">體感溫度計算結果</div>
   </div>
-  <div id="faq">
-    <h3>參數說明</h3>
-    <p><b>酷熱指數：</b>NOAA標準多項式公式<br>
-    <b>體感溫度：</b>AT=1.04T+0.2e−0.65V−2.7，V=風速km/h<br>
-    <b>露點溫度：</b>Tetens氣象標準公式</p>
+
+  <!-- 2.酷熱指數 HI 計算 + 4檔高溫分級 -->
+  <div class="calc-card">
+    <div class="card-title">酷熱指數 Heat Index HI(NOAA公式)｜輸入℉，自動轉℃+危險分級</div>
+    <div class="form-row">
+      <div>
+        <label>氣溫 T (℉)</label>
+        <input id="hi_T" type="number" step="0.1" placeholder="華氏溫度">
+      </div>
+      <div>
+        <label>相對濕度 RH (%)</label>
+        <input id="hi_RH" type="number" step="1" placeholder="0~100">
+      </div>
+    </div>
+    <div class="btn-row">
+      <button class="calc-btn" onclick="calcHI()">計算酷熱指數</button>
+      <button class="clear-btn" onclick="clearHI()">清空</button>
+    </div>
+    <div id="resHI" class="result-box result-empty">酷熱指數(℉/℃)+危險等級</div>
   </div>
 
-  <input type="number" id="temp" placeholder="氣溫 (°C)">
-  <input type="number" id="humidity" placeholder="相對濕度 (%)">
-  <input type="number" id="wind" placeholder="風速 (km/h)｜留空預設=0">
-
-  <div class="btn-row">
-    <button class="calc-btn" onclick="calculate()">一鍵計算三項數值</button>
-    <button class="clear-btn" onclick="clearAll()">清空</button>
+  <!--3.露點溫度 Td 計算 + 3檔舒適度分級 -->
+  <div class="calc-card">
+    <div class="card-title">露點溫度 Td｜馬格努斯公式 a=17.27,b=237.7 + 悶熱舒適分級</div>
+    <div class="form-row">
+      <div>
+        <label>氣溫 T (℃)</label>
+        <input id="td_T" type="number" step="0.1">
+      </div>
+      <div>
+        <label>相對濕度 RH (%)</label>
+        <input id="td_RH" type="number" step="1" placeholder="0~100">
+      </div>
+    </div>
+    <div class="btn-row">
+      <button class="calc-btn" onclick="calcTd()">計算露點溫度</button>
+      <button class="clear-btn" onclick="clearTd()">清空</button>
+    </div>
+    <div id="resTd" class="result-box result-empty">露點溫度+舒適等級</div>
   </div>
-
-  <img src="MSSO (1).png" class="bottom-img">
-</div>
-
-<!-- Three FULLY SEPARATE INDEPENDENT BOXES -->
-<div class="result-container" id="resultContainer"></div>
-
-<!-- Warning Message Area -->
-<div id="warningContainer"></div>
-
-<!-- Heat Index Level Table -->
-<div class="table-card">
-  <table class="heat-table">
-    <tr>
-      <th>酷熱指數(°C)</th>
-      <th>風險分類</th>
-    </tr>
-    <tr class="purple">
-      <td>≥54.5</td>
-      <td>極度危險</td>
-    </tr>
-    <tr class="red">
-      <td>45.5 ~ 54.4</td>
-      <td>危險</td>
-    </tr>
-    <tr class="orange">
-      <td>39.5 ~ 45.4</td>
-      <td>特別注意</td>
-    </tr>
-    <tr class="yellow">
-      <td>35.5 ~ 39.4</td>
-      <td>注意</td>
-    </tr>
-    <tr class="safe">
-      <td>＜35.5</td>
-      <td>正常</td>
-    </tr>
-  </table>
 </div>
 
 <script>
-function toggleMenu() {
+// Mobile Menu Same as your index page
+function toggleMenu(){
   const nav = document.getElementById("navMenu");
   const btn = document.querySelector(".menu-toggle");
   nav.classList.toggle("active");
   btn.innerHTML = nav.classList.contains("active") ? "✕" : "☰";
 }
-function toggleFAQ() {
-  const faq = document.getElementById("faq");
-  faq.style.display = faq.style.display === "none" ? "block" : "none";
-}
-function clearAll(){
-  document.getElementById("temp").value = "";
-  document.getElementById("humidity").value = "";
-  document.getElementById("wind").value = "";
-  document.getElementById("resultContainer").innerHTML = "";
-  document.getElementById("warningContainer").innerHTML = "";
-}
 
-function calculate() {
-  let T = parseFloat(document.getElementById("temp").value);
-  let RH = parseFloat(document.getElementById("humidity").value);
-  let V = parseFloat(document.getElementById("wind").value ?? 0);
-  if(isNaN(V)) V = 0;
-
-  const resWrap = document.getElementById("resultContainer");
-  const warnWrap = document.getElementById("warningContainer");
-  resWrap.innerHTML = "";
-  warnWrap.innerHTML = "";
-
-  if (isNaN(T) || isNaN(RH) || RH < 0 || RH > 100) {
-    warnWrap.innerHTML = `<div class="warn-box red">請輸入合法數值：濕度範圍0~100%</div>`;
+// ====================== 1.體感溫度 AT + 10檔分級判斷 ======================
+function calcAT(){
+  const T = Number(document.getElementById("at_T").value);
+  const RH = Number(document.getElementById("at_RH").value);
+  const V = Number(document.getElementById("at_V").value);
+  const resDom = document.getElementById("resAT");
+  resDom.className="result-box";
+  if(isNaN(T)||isNaN(RH)||isNaN(V)||RH<0||RH>100){
+    resDom.className = "result-box result-error";
+    resDom.innerText = "輸入數據異常：溫度、濕度(0~100)、風速請填寫有效數值";
     return;
   }
+  //公式計算水汽壓與體感
+  const e = (RH/100) * 6.105 * Math.exp( (17.27*T)/(237.7+T) );
+  const AT = 1.04*T + 0.2*e - 0.65*V - 2.7;
+  let levelText="",levelClass="";
+  //對應第一張圖10個等級
+  if(AT>=37.5){levelText="極為酷熱";levelClass="at-lv10";}
+  else if(AT>=35.5){levelText="非常酷熱";levelClass="at-lv9";}
+  else if(AT>=32.5){levelText="酷熱";levelClass="at-lv8";}
+  else if(AT>=27.5){levelText="炎熱";levelClass="at-lv7";}
+  else if(AT>=22.5){levelText="溫暖";levelClass="at-lv6";}
+  else if(AT>=17.5){levelText="和暖";levelClass="at-lv5";}
+  else if(AT>=12.5){levelText="清涼";levelClass="at-lv4";}
+  else if(AT>=7.5){levelText="寒冷";levelClass="at-lv3";}
+  else if(AT>=3.5){levelText="非常寒冷";levelClass="at-lv2";}
+  else {levelText="極為寒冷";levelClass="at-lv1";}
+  resDom.classList.add(levelClass);
+  resDom.innerText = `水汽壓 e = ${e.toFixed(3)} hPa\n體感溫度 AT = ${AT.toFixed(2)} ℃｜等級：${levelText}`;
+}
+function clearAT(){
+  ["at_T","at_RH","at_V"].forEach(id=>document.getElementById(id).value="");
+  const dom = document.getElementById("resAT");
+  dom.innerText = "體感溫度計算結果";
+  dom.className = "result-box result-empty";
+}
 
-  // NOAA Heat Index
-  let HI = -8.784695 + 1.61139411*T + 2.338549*RH - 0.14611605*T*RH - 0.012308094*T*T - 0.016424828*RH*RH + 0.002211732*T*T*RH + 0.00072546*T*RH*RH - 0.000003582*T*T*RH*RH;
-  // Vapor pressure
-  let e = (RH/100)*6.105*Math.exp((17.27*T)/(237.7+T));
-  // Apparent Temperature
-  let AT = 1.04*T + 0.2*e - 0.65*V - 2.7;
-  // Dew Point Tetens
+// ====================== 2.酷熱指數 HI + 4檔危險分級 ======================
+function calcHI(){
+  const Tf = Number(document.getElementById("hi_T").value);
+  const RH = Number(document.getElementById("hi_RH").value);
+  const resDom = document.getElementById("resHI");
+  resDom.className="result-box";
+  if(isNaN(Tf)||isNaN(RH)||RH<0||RH>100){
+    resDom.className = "result-box result-error";
+    resDom.innerText = "數據錯誤：RH需在0~100之間，溫度填寫華氏℉";
+    return;
+  }
+  //NOAA酷熱指數公式
+  let HI = -42.379
+          + 2.04901523*Tf
+          + 10.14333127*RH
+          - 0.22475541*Tf*RH
+          - 0.00683783*Tf*Tf
+          - 0.05481717*RH*RH
+          + 0.00122874*Tf*Tf*RH
+          + 0.00085282*Tf*RH*RH
+          - 0.00000199*Tf*Tf*RH*RH;
+  const HIc = (HI -32)/1.8;
+  let levelText="",levelClass="";
+  //第二張HI分級(單位℃)
+  if(HIc>=54.5){levelText="極度危險";levelClass="hi-lv4";}
+  else if(HIc>=49.5){levelText="非常危險";levelClass="hi-lv3";}
+  else if(HIc>=44.5){levelText="危險";levelClass="hi-lv2";}
+  else if(HIc>=39.5){levelText="警戒";levelClass="hi-lv1";}
+  else {levelText="正常(低於警戒線)";}
+  if(levelClass) resDom.classList.add(levelClass);
+  resDom.innerText = `酷熱指數 HI = ${HI.toFixed(2)} ℉ ≈ ${HIc.toFixed(2)} ℃｜等級：${levelText}`;
+}
+function clearHI(){
+  ["hi_T","hi_RH"].forEach(id=>document.getElementById(id).value="");
+  const dom = document.getElementById("resHI");
+  dom.innerText = "酷熱指數(℉/℃)+危險等級";
+  dom.className = "result-box result-empty";
+}
+
+// ======================3.露點溫度Td + 3檔舒適分級 ======================
+function calcTd(){
+  const T = Number(document.getElementById("td_T").value);
+  const RH = Number(document.getElementById("td_RH").value);
+  const resDom = document.getElementById("resTd");
+  resDom.className="result-box";
+  if(isNaN(T)||isNaN(RH)||RH<=0||RH>100){
+    resDom.className = "result-box result-error";
+    resDom.innerText = "濕度錯誤：RH範圍0~100，不可為0或負數";
+    return;
+  }
   const a=17.27,b=237.7;
-  let gamma = (a*T)/(b+T)+Math.log(RH/100);
-  let TD = (b*gamma)/(a-gamma);
-
-  // Render three fully separate standalone boxes
-  resWrap.innerHTML = `
-    <div class="result-block">
-      <div class="res-heading">🔥 酷熱指數</div>
-      <div class="res-data">${HI.toFixed(2)} ℃</div>
-    </div>
-    <div class="result-block">
-      <div class="res-heading">🌬️ 體感溫度(V=${V}km/h)</div>
-      <div class="res-data">${AT.toFixed(2)} ℃</div>
-    </div>
-    <div class="result-block">
-      <div class="res-heading">💧 露點溫度</div>
-      <div class="res-data">${TD.toFixed(2)} ℃</div>
-    </div>
-  `;
-
-  // Warning text
-  let warnText = "";
-  if(HI >=54.5) warnText = `<div class="warn-box purple">🟣 極度危險｜極易引發熱射病，避免外出</div>`;
-  else if(HI >=45.5) warnText = `<div class="warn-box red">🔴 危險｜容易中暑、熱衰竭，減少戶外活動</div>`;
-  else if(HI >=39.5) warnText = `<div class="warn-box orange">🟠 特別注意｜高溫悶熱，適時補充水分</div>`;
-  else if(HI >=35.5) warnText = `<div class="warn-box yellow">🟡 注意｜長時間活動容易疲勞</div>`;
-  else warnText = `<div class="warn-box safe">✅ 環境溫濕度正常，體感舒適</div>`;
-  warnWrap.innerHTML = warnText;
+  const γ = (a*T)/(b+T)+Math.log(RH/100);
+  const Td = (b*γ)/(a-γ);
+  let levelText="",levelClass="";
+  //第三張露點分級
+  if(Td>=28){levelText="危險(極悶)";levelClass="td-lv3";}
+  else if(Td>=24){levelText="悶熱";levelClass="td-lv2";}
+  else if(Td>=18){levelText="舒適";levelClass="td-lv1";}
+  else {levelText="乾爽舒適";}
+  if(levelClass) resDom.classList.add(levelClass);
+  resDom.innerText = `露點溫度 Td = ${Td.toFixed(2)} ℃｜舒適等級：${levelText}`;
+}
+function clearTd(){
+  ["td_T","td_RH"].forEach(id=>document.getElementById(id).value="");
+  const dom = document.getElementById("resTd");
+  dom.innerText = "露點溫度+舒適等級";
+  dom.className = "result-box result-empty";
 }
 </script>
 </body>
