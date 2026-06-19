@@ -6,27 +6,42 @@
 <link rel="icon" type="image/png" href="MSSO (2).png">
 <title>酷熱指數｜體感溫度｜露點溫度計算 | 澳門民間氣象台 MSSO</title>
 <style>
-/* ========== Global Base ========== */
+/* ========== 全域深色Dashboard基底 ========== */
+html {
+  scroll-behavior: smooth;
+}
 body {
   margin: 0;
   font-family: Arial, sans-serif;
+  background-color: #0f141c;
+  color: #e2e8f0;
+  box-sizing: border-box;
 }
-/* ========== Header & Navigation (Same Index Style) ========== */
+* {
+  box-sizing: border-box;
+}
+
+/* ========== 頁頭Header 全站統一深色儀表頂欄 ========== */
 .header {
-  background: #1f3a4d;
-  color: white;
-  padding: 25px 20px;
+  background: #151d2b;
+  color: #ffffff;
+  padding: 22px 20px;
   display: flex;
   align-items: center;
+  border-bottom: 1px solid #243249;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.3);
 }
 .title {
   font-size: 20px;
   font-weight: bold;
   margin-left: 10px;
+  letter-spacing: 0.5px;
 }
 .logo {
   height: 40px;
 }
+
+/* ========== 頂部導航菜單 深色側欄風格 ========== */
 .menu-container {
   position: relative;
   z-index: 3000;
@@ -37,55 +52,59 @@ body {
   font-size: 26px;
   padding: 10px 15px;
   cursor: pointer;
-  background: #2d6c94;
+  background: #233752;
   color: white;
+  border-radius: 6px;
 }
 .nav {
-  background: #2d6c94;
+  background: #1a2538;
   display: flex;
 }
 .nav a {
-  color: white;
+  color: #cbd5e1;
   padding: 25px 20px;
   font-size: 18px;
   text-decoration: none;
   display: block;
+  transition: 0.25s ease;
 }
 .nav a:hover {
-  background: #1f4f6d;
+  background: #233752;
+  color: #ffffff;
 }
 
-/* ========== Page Wrap Layout ========== */
+/* ========== 頁面佈局 ========== */
 .calc-wrap{
   display: grid;
   grid-template-columns: 1fr;
   gap:35px;
-  margin:18px 35px;
+  margin:24px 35px;
   max-width:900px;
 }
 
-/* ========== Unified Card Style (Same forecast-tab box) ========== */
+/* ========== 深色統一卡片樣式 ========== */
 .calc-card{
-  border:2px solid #4fa6a6;
-  border-radius:12px;
-  background:#e6f7f7;
-  box-shadow:0 2px 8px rgba(0,0,0,0.2);
-  padding:25px;
-  transition: all 0.25s ease;
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:16px;
+  background:#142929;
+  box-shadow:0 5px 18px rgba(0,0,0,0.4);
+  padding:26px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 .calc-card:hover{
-  box-shadow:0 4px 12px rgba(79,166,166,0.25);
+  transform: translateY(-3px);
+  box-shadow:0 8px 24px rgba(0,0,0,0.45);
 }
 .card-title{
   font-size:19px;
   font-weight:bold;
-  color:#1f3a4d;
+  color:#7cd1d1;
   margin:0 0 20px 0;
   padding-bottom:10px;
-  border-bottom:1px solid #b8d8d8;
+  border-bottom:1px solid rgba(79,166,166,0.25);
 }
 
-/* ========== Form Layout ========== */
+/* ========== 表單輸入區深色風格 ========== */
 .form-row{
   display:grid;
   grid-template-columns:1fr 1fr;
@@ -99,16 +118,17 @@ label{
   display:block;
   font-size:15px;
   margin-bottom:6px;
-  color:#333;
+  color:#cbd5e1;
 }
 input, select{
   width:100%;
   box-sizing:border-box;
   padding:11px 12px;
-  border:1px solid #b8d8d8;
+  border:1px solid rgba(79,166,166,0.3);
   border-radius:10px;
   font-size:15px;
-  background:#fff;
+  background:#1a2538;
+  color:#fff;
   transition:0.2s;
 }
 input:focus, select:focus{
@@ -116,8 +136,11 @@ input:focus, select:focus{
   border-color:#4fa6a6;
   box-shadow:0 0 0 3px rgba(79,166,166,0.18);
 }
+input::placeholder {
+  color:#94a3b8;
+}
 
-/* ========== Buttons Beautified (Gradient + Hover animate) ========== */
+/* ========== 按鈕樣式 ========== */
 .btn-row{
   display:grid;
   grid-template-columns: 2fr 1fr;
@@ -143,69 +166,71 @@ input:focus, select:focus{
   padding:12px;
   border:none;
   border-radius:25px;
-  background:#cccccc;
-  color:#333;
+  background:#334155;
+  color:#e2e8f0;
   font-size:15px;
   cursor:pointer;
   transition:0.3s;
 }
 .clear-btn:hover{
-  background:#bbbbbb;
+  background:#475569;
 }
 .unit-title{
   font-size:18px;
   font-weight:bold;
-  color:#222;
+  color:#ffffff;
   margin-bottom:14px;
   display:block;
 }
 
-/* ========== Result Display Box + 分級邊色樣式 ========== */
+/* ========== 結果輸出框基礎 ========== */
 .result-box{
   margin-top:18px;
   padding:14px;
-  background:#ffffff;
+  background:#1a2538;
   border-left:5px solid #4fa6a6;
   border-radius:8px;
   font-size:15px;
   line-height:1.7;
   min-height:42px;
+  white-space: pre-line;
 }
 .result-empty{
-  color:#777;
+  color:#94a3b8;
 }
 .result-error{
-  border-left-color:#e1665c;
-  background:#fef1f1;
+  border-left-color:#b94242;
+  background:#291414;
+  color:#fecfcf;
 }
-/*====體感溫度AT 10級左邊框顏色(對應首張圖色標)====*/
-.at-lv10{border-left-color:#481c0c;}/*≥37.5 極為酷熱 深棕黑*/
-.at-lv9 {border-left-color:#b02820;}/*35.5~37.4非常酷熱暗紅*/
-.at-lv8 {border-left-color:#ed362c;}/*32.5~35.4酷熱亮紅*/
-.at-lv7 {border-left-color:#f28722;}/*27.5~32.4炎熱橙*/
-.at-lv6 {border-left-color:#b48228;}/*22.5~27.4溫暖土黃*/
-.at-lv5 {border-left-color:#989c2b;}/*17.5~22.4和暖黃綠*/
-.at-lv4 {border-left-color:#48b37e;}/*12.5~17.4清涼青綠*/
-.at-lv3 {border-left-color:#285b82;}/*7.5~12.4寒冷藍*/
-.at-lv2 {border-left-color:#1c2680;}/*3.5~7.4非常寒冷深藍*/
-.at-lv1 {border-left-color:#3c1559;}/*<3.5極為寒冷深紫*/
 
-/*====酷熱指數HI 4級顏色(第二張圖高溫危險)====*/
-.hi-lv4{border-left-color:#000000;background:#f7f7f7;}/*≥54.5極度危險黑*/
-.hi-lv3{border-left-color:#e82222;background:#fff6f6;}/*49.5~54.4非常危險紅*/
-.hi-lv2{border-left-color:#e67923;background:#fff8f0;}/*44.5~49.4危險橙*/
-.hi-lv1{border-left-color:#d4b926;background:#fffce3;}/*39.5~44.4警戒黃*/
+/*====體感溫度AT 10級左邊框深色對應配色====*/
+.at-lv10{border-left-color:#481c0c;background:#1f0f09;color:#ffdcdc;}
+.at-lv9 {border-left-color:#b02820;background:#2c100f;color:#ffdcdc;}
+.at-lv8 {border-left-color:#ed362c;background:#30110e;color:#ffdcdc;}
+.at-lv7 {border-left-color:#f28722;background:#2e1b09;color:#ffe8cc;}
+.at-lv6 {border-left-color:#b48228;background:#29200f;color:#fff2cc;}
+.at-lv5 {border-left-color:#989c2b;background:#272c12;color:#f8ffd8;}
+.at-lv4 {border-left-color:#48b37e;background:#142c20;color:#d8ffe8;}
+.at-lv3 {border-left-color:#285b82;background:#102030;color:#d0e8ff;}
+.at-lv2 {border-left-color:#1c2680;background:#0e1233;color:#d0e8ff;}
+.at-lv1 {border-left-color:#3c1559;background:#1a0f27;color:#f0e0ff;}
 
-/*====露點Td 3級顏色(第三張圖悶熱舒適)====*/
-.td-lv3{border-left-color:#551080;background:#f9f4ff;}/*≥28危險紫*/
-.td-lv2{border-left-color:#9c2020;background:#fff3f3;}/*24~27.9悶熱棗紅*/
-.td-lv1{border-left-color:#2b8c30;background:#f3fff3;}/*18~23.9舒適綠*/
+/*====酷熱指數HI 4級深色配色====*/
+.hi-lv4{border-left-color:#000000;background:#191919;color:#f2f2f2;}
+.hi-lv3{border-left-color:#e82222;background:#2d1010;color:#ffdddd;}
+.hi-lv2{border-left-color:#e67923;background:#2b1a0c;color:#ffe8d0;}
+.hi-lv1{border-left-color:#d4b926;background:#27230f;color:#fff8cc;}
 
-/* ========== Mobile responsive ========== */
+/*====露點Td 3級深色配色====*/
+.td-lv3{border-left-color:#551080;background:#220f33;color:#f0e0ff;}
+.td-lv2{border-left-color:#9c2020;background:#2c1010;color:#ffdddd;}
+.td-lv1{border-left-color:#2b8c30;background:#102c15;color:#d8ffdf;}
+
+/* ========== 手機響應式 ========== */
 @media(max-width:768px){
   .calc-wrap{
-    grid-template-columns:1fr;
-    margin:18px 22px;
+    margin:20px 20px;
   }
   .menu-toggle{
     display:block;
@@ -214,20 +239,23 @@ input:focus, select:focus{
     display:none;
     flex-direction:column;
     width:100%;
+    position:absolute;
+    top:68px;
+    left:0;
   }
   .nav.active{
     display:flex;
   }
   .nav a{
     width:100%;
-    padding:12px 15px;
-    border-top:1px solid rgba(255,255,255,0.2);
+    padding:14px 18px;
+    border-top:1px solid rgba(255,255,255,0.08);
   }
 }
 </style>
 </head>
 <body>
-<!-- Header Nav Copy from your index -->
+<!-- Header Nav 全站統一深色導航 -->
 <div class="header">
 <img src="MSSO (2).png" class="logo">
 <div class="title">澳門民間氣象台 MSSO</div>
@@ -245,7 +273,7 @@ input:focus, select:focus{
 </div>
 </div>
 
-<!-- Main Content -->
+<!-- 主內容區 -->
 <div class="calc-wrap">
   <!-- 1.體感溫度 AT 計算 + 10檔分級 -->
   <div class="calc-card">
@@ -313,7 +341,7 @@ input:focus, select:focus{
 </div>
 
 <script>
-// Mobile Menu Same as your index page
+// Mobile Menu
 function toggleMenu(){
   const nav = document.getElementById("navMenu");
   const btn = document.querySelector(".menu-toggle");
@@ -333,11 +361,9 @@ function calcAT(){
     resDom.innerText = "輸入數據異常：溫度、濕度(0~100)、風速請填寫有效數值";
     return;
   }
-  //公式計算水汽壓與體感
   const e = (RH/100) * 6.105 * Math.exp( (17.27*T)/(237.7+T) );
   const AT = 1.04*T + 0.2*e - 0.65*V - 2.7;
   let levelText="",levelClass="";
-  //對應第一張圖10個等級
   if(AT>=37.5){levelText="極為酷熱";levelClass="at-lv10";}
   else if(AT>=35.5){levelText="非常酷熱";levelClass="at-lv9";}
   else if(AT>=32.5){levelText="酷熱";levelClass="at-lv8";}
@@ -360,7 +386,7 @@ function clearAT(){
 
 // ====================== 2.酷熱指數 HI + 4檔危險分級 ======================
 function calcHI(){
-  const Tc = Number(document.getElementById("hi_T").value); //使用者輸入攝氏
+  const Tc = Number(document.getElementById("hi_T").value);
   const RH = Number(document.getElementById("hi_RH").value);
   const resDom = document.getElementById("resHI");
   resDom.className="result-box";
@@ -369,10 +395,7 @@ function calcHI(){
     resDom.innerText = "數據錯誤：RH需在0~100之間，溫度填寫攝氏℃";
     return;
   }
-  // C → F
   const Tf = Tc * 1.8 + 32;
-
-  // NOAA Heat Index Formula (use °F)
   let HI = -42.379
           + 2.04901523*Tf
           + 10.14333127*RH
@@ -382,8 +405,7 @@ function calcHI(){
           + 0.00122874*Tf*Tf*RH
           + 0.00085282*Tf*RH*RH
           - 0.00000199*Tf*Tf*RH*RH;
-
-  const HIc = (HI -32)/1.8; // HI°F → HI℃
+  const HIc = (HI -32)/1.8;
   let levelText="",levelClass="";
   if(HIc>=54.5){levelText="極度危險";levelClass="hi-lv4";}
   else if(HIc>=49.5){levelText="非常危險";levelClass="hi-lv3";}
@@ -415,7 +437,6 @@ function calcTd(){
   const γ = (a*T)/(b+T)+Math.log(RH/100);
   const Td = (b*γ)/(a-γ);
   let levelText="",levelClass="";
-  //第三張露點分級
   if(Td>=28){levelText="危險(極悶)";levelClass="td-lv3";}
   else if(Td>=24){levelText="悶熱";levelClass="td-lv2";}
   else if(Td>=18){levelText="舒適";levelClass="td-lv1";}
