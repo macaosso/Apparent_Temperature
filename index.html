@@ -28,8 +28,13 @@ body {
   padding: 22px 20px;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   border-bottom: 1px solid #243249;
   box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+}
+.header-left{
+  display:flex;
+  align-items:center;
 }
 .title {
   font-size: 20px;
@@ -45,7 +50,6 @@ body {
 .menu-container {
   position: relative;
   z-index: 3000;
-  margin-left: auto;
 }
 .menu-toggle {
   display: none;
@@ -57,16 +61,17 @@ body {
   border-radius: 6px;
 }
 .nav {
-  background: #1a2538;
   display: flex;
 }
 .nav a {
   color: #cbd5e1;
-  padding: 25px 20px;
-  font-size: 18px;
+  padding: 12px 16px;
+  font-size: 16px;
   text-decoration: none;
   display: block;
   transition: 0.25s ease;
+  border-radius: 6px;
+  margin:0 3px;
 }
 .nav a:hover {
   background: #233752;
@@ -78,7 +83,8 @@ body {
   display: grid;
   grid-template-columns: 1fr;
   gap:35px;
-  margin:24px 35px;
+  margin:24px auto;
+  padding:0 35px;
   max-width:900px;
 }
 
@@ -228,10 +234,7 @@ input::placeholder {
 .td-lv1{border-left-color:#2b8c30;background:#102c15;color:#d8ffdf;}
 
 /* ========== 手機響應式 ========== */
-@media(max-width:768px){
-  .calc-wrap{
-    margin:20px 20px;
-  }
+@media(max-width:992px){
   .menu-toggle{
     display:block;
   }
@@ -240,8 +243,11 @@ input::placeholder {
     flex-direction:column;
     width:100%;
     position:absolute;
-    top:68px;
+    top:64px;
     left:0;
+    background:#1a2538;
+    border-radius:0 0 12px 12px;
+    box-shadow:0 8px 16px rgba(0,0,0,0.35);
   }
   .nav.active{
     display:flex;
@@ -250,6 +256,12 @@ input::placeholder {
     width:100%;
     padding:14px 18px;
     border-top:1px solid rgba(255,255,255,0.08);
+    border-radius:0;
+    margin:0;
+  }
+  .calc-wrap{
+    padding:0 20px;
+    margin:20px auto;
   }
 }
 </style>
@@ -257,20 +269,22 @@ input::placeholder {
 <body>
 <!-- Header Nav 全站統一深色導航 -->
 <div class="header">
-<img src="MSSO (2).png" class="logo">
-<div class="title">澳門民間氣象台 MSSO</div>
-</div>
-<div class="menu-container">
-<div class="menu-toggle" onclick="toggleMenu()">☰</div>
-<div class="nav" id="navMenu">
-<a href="https://macaosso.github.io/MSSOweb/index.html">首頁</a>
-<a href="https://macaosso.github.io/Apparent_Temperature/">酷熱指數</a>
-<a href="https://macaosso.github.io/MSSOweb/cal_dis.html">熱帶氣旋距離計算工具</a>
-<a href="https://macaosso.github.io/MSSOweb/tc_gis.html">熱帶氣旋路徑地圖</a>
-<a href="https://macaosso.github.io/MSSOweb/tc.html">熱帶氣旋資訊</a>
-<a href="https://macaosso.github.io/MSSOweb/about.html">關於我們</a>
-<a href="https://macaosso.github.io/MSSOweb/ver.html">版本記錄</a>
-</div>
+  <div class="header-left">
+    <img src="MSSO (2).png" class="logo">
+    <div class="title">澳門民間氣象台 MSSO</div>
+  </div>
+  <div class="menu-container">
+    <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+    <div class="nav" id="navMenu">
+      <a href="https://macaosso.github.io/MSSOweb/index.html">首頁</a>
+      <a href="https://macaosso.github.io/Apparent_Temperature/">酷熱指數</a>
+      <a href="https://macaosso.github.io/MSSOweb/cal_dis.html">熱帶氣旋距離計算工具</a>
+      <a href="https://macaosso.github.io/MSSOweb/tc_gis.html">熱帶氣旋路徑地圖</a>
+      <a href="https://macaosso.github.io/MSSOweb/tc.html">熱帶氣旋資訊</a>
+      <a href="https://macaosso.github.io/MSSOweb/about.html">關於我們</a>
+      <a href="https://macaosso.github.io/MSSOweb/ver.html">版本記錄</a>
+    </div>
+  </div>
 </div>
 
 <!-- 主內容區 -->
@@ -406,6 +420,10 @@ function calcHI(){
           + 0.00085282*Tf*RH*RH
           - 0.00000199*Tf*Tf*RH*RH;
   const HIc = (HI -32)/1.8;
+  let note = "";
+  if(Tc < 26.7){
+    note = "\n⚠️ 注意：NOAA酷熱指數公式建議僅適用於氣溫 ≥26.7℃";
+  }
   let levelText="",levelClass="";
   if(HIc>=54.5){levelText="極度危險";levelClass="hi-lv4";}
   else if(HIc>=49.5){levelText="非常危險";levelClass="hi-lv3";}
@@ -413,12 +431,12 @@ function calcHI(){
   else if(HIc>=39.5){levelText="警戒";levelClass="hi-lv1";}
   else {levelText="正常(低於警戒線)";}
   if(levelClass) resDom.classList.add(levelClass);
-  resDom.innerText = `酷熱指數 HI = ${HI.toFixed(2)} ℉ ≈ ${HIc.toFixed(2)} ℃ \n等級：${levelText}`;
+  resDom.innerText = `酷熱指數 HI = ${HI.toFixed(2)} ℉ ≈ ${HIc.toFixed(2)} ℃ \n等級：${levelText}${note}`;
 }
 function clearHI(){
   ["hi_T","hi_RH"].forEach(id=>document.getElementById(id).value="");
   const dom = document.getElementById("resHI");
-  dom.innerText = "酷熱指數(℉/℃)+危險等級";
+  dom.innerText = "酷熱指數計算結果";
   dom.className = "result-box result-empty";
 }
 
@@ -447,7 +465,7 @@ function calcTd(){
 function clearTd(){
   ["td_T","td_RH"].forEach(id=>document.getElementById(id).value="");
   const dom = document.getElementById("resTd");
-  dom.innerText = "露點溫度";
+  dom.innerText = "露點溫度計算結果";
   dom.className = "result-box result-empty";
 }
 </script>
