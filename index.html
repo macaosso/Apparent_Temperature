@@ -59,6 +59,11 @@ body {
   background: #233752;
   color: white;
   border-radius: 6px;
+  border: none;
+  transition: 0.25s ease;
+}
+.menu-toggle:hover{
+  background:#2c4363;
 }
 .nav {
   display: flex;
@@ -243,7 +248,7 @@ input::placeholder {
     flex-direction:column;
     width:100%;
     position:absolute;
-    top:64px;
+    top:calc(100% + 4px);
     left:0;
     background:#1a2538;
     border-radius:0 0 12px 12px;
@@ -259,11 +264,26 @@ input::placeholder {
     border-radius:0;
     margin:0;
   }
+  .nav a:first-child{
+    border-top:none;
+    border-radius:12px 12px 0 0;
+  }
   .calc-wrap{
     padding:0 20px;
     margin:20px auto;
   }
 }
+
+/* 斷點還原：視窗放大自動恢復桌面導航，解決active狀態殘留BUG */
+@media(min-width:993px){
+  .nav{
+    display:flex !important;
+  }
+  .menu-toggle{
+    display:none !important;
+  }
+}
+
 </style>
 </head>
 <body>
